@@ -11,6 +11,7 @@
 		const taskItemId = targetElement.dataset.taskItemId as string;
 		const isChecked = targetElement.checked;
 
+		// TODO: Create an endpoint for stores
 		const response = await fetch('/', {
 			method: 'POST',
 			headers: {
