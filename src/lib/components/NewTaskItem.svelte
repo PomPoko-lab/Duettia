@@ -11,7 +11,7 @@
 
 	export let ticketID = '0';
 	export let isAddingTask = false;
-	export let taskItemsContainer;
+	export let taskItemsContainer: HTMLDivElement;
 
 	onMount(() => {
 		scrollTopContainer();
@@ -22,29 +22,21 @@
 	const taskIsCompleted = completedBy === '' ? false : true;
 
 	const markTaskCompleted = async (e: Event) => {
-		// TODO: REcord the user's ID when this is called
+		// TODO: Record the user's ID when this is called
 		// On form submission, set the completedBy field to the user's ID
-		// const targetElement = e.target as HTMLInputElement;
-		// const taskItemId = targetElement.dataset.taskItemId as string;
-		// const isChecked = targetElement.checked;
-		// // TODO: Create an endpoint for stores
-		// const response = await fetch('/', {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	},
-		// 	body: JSON.stringify({ taskItemId, isChecked })
-		// });
-		// TODO: Handle response
 	};
 
 	const scrollTopContainer = () => {
 		taskItemsContainer.scrollTop = taskItemsContainer.scrollHeight;
 	};
+
+	const cancelAddTask = () => {
+		isAddingTask = false;
+	};
 </script>
 
 <form
-	action="?/addTaskItem"
+	action="?/createTaskItem"
 	method="POST"
 	use:enhance={() => {
 		return async ({ update }) => {
@@ -63,8 +55,8 @@
 			<Checkbox
 				data-task-item-id={taskId}
 				on:change={markTaskCompleted}
-				checked={taskIsCompleted}
 				class="w-6 h-6"
+				name="taskIsCompleted"
 			/>
 			<Input class="hidden" type="text" name="ticketID" value={ticketID} />
 			<Input
@@ -77,7 +69,9 @@
 			/>
 			<div class="flex align-center gap-3 ms-auto">
 				<Button type="submit" color="green"><span class="material-icons">check</span></Button>
-				<Button outline color="red"><span class="material-icons">close</span></Button>
+				<Button on:click={cancelAddTask} outline color="red"
+					><span class="material-icons">close</span></Button
+				>
 			</div>
 		</div>
 	</div>

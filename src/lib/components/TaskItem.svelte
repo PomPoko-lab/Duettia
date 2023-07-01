@@ -4,6 +4,8 @@
 	export let taskId = '0';
 	export let taskDescription = 'No description available';
 	export let completedBy = '';
+	export let showDeleteConfirmationModal = false;
+	export let deleteTaskID = '';
 	const taskIsCompleted = completedBy === '' ? false : true;
 
 	const markTaskCompleted = async (e: Event) => {
@@ -17,10 +19,18 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ taskItemId, isChecked })
+			body: JSON.stringify({
+				taskItemId,
+				isChecked
+			})
 		});
 
 		// TODO: Handle response
+	};
+
+	const setTaskForDeletion = () => {
+		showDeleteConfirmationModal = true;
+		deleteTaskID = taskId;
 	};
 </script>
 
@@ -43,7 +53,9 @@
 			<Button outline color="light"><span class="material-icons">edit</span></Button>
 			<Button outline color="green" class="hidden"><span class="material-icons">check</span></Button
 			>
-			<Button color="red"><span class="material-icons">close</span></Button>
+			<Button on:click={setTaskForDeletion} color="red"
+				><span class="material-icons">close</span></Button
+			>
 		</div>
 	</div>
 </div>

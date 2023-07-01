@@ -1,5 +1,6 @@
 import { pb } from '$lib/pocketbase';
 import TaskItem from '$lib/server/stores/TaskItemStore';
+import config from '$lib/config';
 
 import type ITicket from '$lib/interface/ITicket';
 import type ITaskItem from '$lib/interface/ITaskItem';
@@ -12,7 +13,7 @@ export const load = async () => {
 	// TODO: Add this into the TaskItemStore
 	const taskItems: ITaskItem[] = (
 		await pb.collection('ticket_tasks').getList(1, 100, {
-			filter: `ticketID = '${task.id}'`
+			filter: `ticketID = '${task.id}' && active = true`
 		})
 	).items;
 
@@ -24,16 +25,30 @@ export const load = async () => {
 };
 
 export const actions = {
-	addTaskItem: async ({ cookies, request }) => {
+	createTaskItem: async ({ cookies, request }) => {
 		// TODO: Eventually move this into a model
 		const formData = await request.formData();
 
 		const ticketID = formData.get('ticketID');
 		const taskDescription = formData.get('taskDescription');
+		const taskIsCompleted = formData.get('taskIsCompleted') === '';
+		let completedBy = '';
 
-		const results = await TaskItem.addTaskItem(ticketID, taskDescription);
+		if (taskIsCompleted) {
+			completedBy = config.MY_USER_ID;
+		}
 
-		console.log(results);
+		const results = await TaskItem.createTaskItem(ticketID, taskDescription, completedBy);
+
+		return {
+			success: true
+		};
+	},
+	deleteTaskItem: async ({ cookies, request }) => {
+		const formData = await request.formData();
+		const taskID = formData.get('taskItemID');
+
+		const results = await TaskItem.deleteTaskItem(taskID);
 		return {
 			success: true
 		};

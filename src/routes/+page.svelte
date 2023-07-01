@@ -2,11 +2,21 @@
 	import { Label, Textarea, Button } from 'flowbite-svelte';
 	import TaskItem from '$lib/components/TaskItem.svelte';
 	import NewTaskItem from '$lib/components/NewTaskItem.svelte';
+	import ConfirmationModal from '$lib/components/ConfirmationModal.svelte';
+	import { enhance } from '$app/forms';
 
 	export let data;
 	let ticketID = data.ticketID;
 
+	// The state of adding a new task item
 	let isAddingTask = false;
+
+	// These allow TaskItems to open the delete confirmation modal and set the task ID to be deleted
+	let showDeleteConfirmationModal = false;
+	let deleteTaskID = '0';
+	let deleteFormSubmitBtn: HTMLButtonElement;
+
+	// For scrolling the container to the new task item when it's added or new add is clicked
 	let taskItemsContainer;
 
 	const renderNewTaskItem = () => {
@@ -16,7 +26,22 @@
 		// Scroll the container to the new task item
 		// This state shows an empty input field. Change the edit button to a checkmark to save the new task item
 	};
+
+	const deleteTaskItem = async () => {
+		deleteFormSubmitBtn.click();
+	};
 </script>
+
+<ConfirmationModal
+	bind:isOpen={showDeleteConfirmationModal}
+	messageBody="Are you sure you want to delete this task? <br> This cannot be undone."
+	confirmAction={deleteTaskItem}
+/>
+
+<form method="POST" action="?/deleteTaskItem" use:enhance>
+	<input type="hidden" name="taskItemID" value={deleteTaskID} />
+	<button type="submit" class="hidden" bind:this={deleteFormSubmitBtn} />
+</form>
 
 <div class="container mx-auto flex gap-6 my-6">
 	<div class="grow w-1/3">
@@ -39,6 +64,8 @@
 					taskId={taskItem.id}
 					taskDescription={taskItem.description}
 					completedBy={taskItem.completedBy}
+					bind:showDeleteConfirmationModal
+					bind:deleteTaskID
 				/>
 			{/each}
 			{#if isAddingTask}
