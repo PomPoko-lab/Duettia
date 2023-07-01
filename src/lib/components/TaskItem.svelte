@@ -21,11 +21,9 @@
 		});
 
 		// TODO: Handle response
-		console.log(response.ok);
 	};
 </script>
 
-<!-- svelte-ignore a11y-invalid-attribute -->
 <div
 	id="taskItem_{taskId}"
 	aria-label="Task item (#{taskId})"

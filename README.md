@@ -22,7 +22,7 @@ Duettia integrates two principal technologies:
 Duettia presents an assortment of features, both established and upcoming:
 
 - [ ] **Ticket System:** A way to effectively manage new feature requests and bug reports.
-- [ ] **Dockerizing the Application:** Package the application using Docker. Allows the development, testing, and production environments to be more consistent.
+- [ ] **Dockerized Application:** Package the application using Docker. Allows the development, testing, and production environments to be more consistent.
 - [ ] **Authentication:** A system ensuring access is exclusively given to authenticated users.
 - [ ] **IP Whitelisting:** A security measure restricting access to approved locations only.
 

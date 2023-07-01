@@ -4,9 +4,10 @@ import TaskItem from '$lib/server/stores/TaskItemStore';
 import type ITicket from '$lib/interface/ITicket';
 import type ITaskItem from '$lib/interface/ITaskItem';
 
-export async function load() {
+export const load = async () => {
 	// TODO: Remove this hard coded ticket ID
-	const task: ITicket = await pb.collection('tickets').getOne('gc0t2enzzzq0wm5');
+	const ticketID = 'gc0t2enzzzq0wm5';
+	const task: ITicket = await pb.collection('tickets').getOne(ticketID);
 
 	// TODO: Add this into the TaskItemStore
 	const taskItems: ITaskItem[] = (
@@ -16,9 +17,25 @@ export async function load() {
 	).items;
 
 	return {
-		props: {
-			task: task.export(),
-			taskItems: taskItems.map((r) => r.export())
-		}
+		task: task.export(),
+		taskItems: taskItems.map((r) => r.export()),
+		ticketID: ticketID
 	};
-}
+};
+
+export const actions = {
+	addTaskItem: async ({ cookies, request }) => {
+		// TODO: Eventually move this into a model
+		const formData = await request.formData();
+
+		const ticketID = formData.get('ticketID');
+		const taskDescription = formData.get('taskDescription');
+
+		const results = await TaskItem.addTaskItem(ticketID, taskDescription);
+
+		console.log(results);
+		return {
+			success: true
+		};
+	}
+};
