@@ -4,11 +4,11 @@
 
 ## Table of Contents
 
-- [Technologies](#technologies)
-- [Features](#features)
-- [Visuals](#visuals)
-- [License](#license)
-- [Project Note](#project-note)
+- [Technologies](#technologies-)
+- [Features](#features-)
+- [Visuals](#visuals-)
+- [License](#license-)
+- [Project Note](#project-note-)
 
 ## Technologies 💻
 
