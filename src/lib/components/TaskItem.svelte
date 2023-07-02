@@ -8,7 +8,7 @@
 	export let taskId: string;
 	export let taskDescription: string;
 	export let completedBy: string;
-	const taskIsCompleted = completedBy === '' ? false : true; // If there's a userid, it's completed by them
+	$: taskIsCompleted = completedBy === '' ? false : true; // If there's a userid, it's completed by them
 
 	// Editing Task states
 	let isEditingTask = false; // Manages the editing task state
@@ -30,7 +30,7 @@
 		const isChecked = targetElement.checked;
 
 		// TODO: Create an endpoint for stores
-		const response = await fetch('/', {
+		const response = await fetch('/tickets/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -111,7 +111,7 @@
 <div
 	id="taskItem_{taskId}"
 	aria-label="Task item (#{taskId})"
-	class="me-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-lg border border-gray-200 dark:border-gray-700 shadow-md flex flex-col hover:bg-gray-100 dark:hover:bg-gray-700 p-4 sm:p-6 max-w-full"
+	class="me-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-lg border border-gray-200 dark:border-gray-700 shadow-md flex-col hover:bg-gray-100 dark:hover:bg-gray-700 p-2 sm:p-3 max-w-full relative"
 >
 	<div class="flex items-center gap-4 p-2 text-lg">
 		<Checkbox
@@ -123,7 +123,11 @@
 		{#if isEditingTask}
 			<Input type="text" bind:value={updatedTaskDescription} />
 		{:else}
-			<p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">
+			<p
+				class="font-normal text-gray-{taskIsCompleted
+					? '400'
+					: '700'} dark:text-gray-400 leading-tight"
+			>
 				{taskDescription}
 			</p>
 		{/if}

@@ -9,4 +9,8 @@ export default interface Ticket {
 	completed: boolean;
 	created: string;
 	updated: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	expand: Record<string, any>;
+	important: boolean;
+	status: string;
 }

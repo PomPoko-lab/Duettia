@@ -36,7 +36,7 @@
 	method="POST"
 	use:enhance={() => {
 		return async ({ update }) => {
-			isAddingTask = false;
+			isAddingTask = false; // Disable the adding task form
 			await update();
 		};
 	}}

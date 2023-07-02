@@ -1,19 +1,20 @@
-import Tickets from '$lib/server/models/Tickets';
-import type { RequestEvent } from './$types';
-import TicketTasksController from '$lib/server/controllers/TicketTasksController';
-
+import type { RequestEvent, PageServerLoad } from './$types';
 import type ITaskItem from '$lib/interface/ITaskItem';
+import Tickets from '$lib/server/models/Tickets';
+import TicketTasksController from '$lib/server/controllers/TicketTasksController';
 
 const ticketsDB = new Tickets();
 const ticketTaskController = new TicketTasksController();
 
-export const load = async () => {
+export const load: PageServerLoad = async ({ params }) => {
 	// TODO: Remove this hard coded ticket ID
-	const ticketID = 'gc0t2enzzzq0wm5';
+	// console.log;
+	// const ticketID = 'gc0t2enzzzq0wm5';
+	const ticketID = params.id;
 	const ticket = (await ticketsDB.getOneRecord(ticketID)).export();
 
 	const taskItems = await ticketTaskController.getAllAvailableTaskItemsByTicket(ticketID);
-	const taskItemsJSON = taskItems.map((r) => r.export()) as ITaskItem[]; // List of task items for this ticket
+	const taskItemsJSON = taskItems.map((record) => record.export()) as ITaskItem[]; // List of task items for this ticket
 
 	// Move the completed items to the bottom of the list
 	taskItemsJSON.sort((a, b) => {

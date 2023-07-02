@@ -1,9 +1,10 @@
-import { error, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 import TaskItemStore from '$lib/server/stores/TaskItemStore';
 
 import config from '$lib/config';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
 	// TODO: Move this into a form post handler
 	const { taskItemId, isChecked } = await request.json();
 	let completedBy = '';
@@ -19,4 +20,4 @@ export async function POST({ request }) {
 	return json(null, {
 		status: 200
 	});
-}
+};

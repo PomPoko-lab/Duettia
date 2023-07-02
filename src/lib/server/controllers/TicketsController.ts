@@ -6,4 +6,11 @@ export default class TicketsController {
 	constructor() {
 		this.ticketsDB = new Tickets();
 	}
+
+	async getAllTickets() {
+		const tickets = await this.ticketsDB.getFullListOfRecords({
+			sort: '-created'
+		});
+		return tickets;
+	}
 }
