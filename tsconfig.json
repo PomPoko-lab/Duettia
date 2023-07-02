@@ -1,14 +1,16 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"allowJs": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": true
+		"allowJs": true,	/* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+		"checkJs": true,	/* Enable error reporting in type-checked JavaScript files. */
+		"esModuleInterop": true,	 /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+		"forceConsistentCasingInFileNames": true,	/* Ensure that casing is correct in imports. */
+		"resolveJsonModule": true, /* Enable importing .json files. */
+		"skipLibCheck": true, 	/* Skip type checking all .d.ts files. */
+		"sourceMap": true, /* Create source map files for emitted JavaScript files. */
+		"strict": true, /* Enable all strict type-checking options. */
+		"noImplicitAny": true, /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+		"strictNullChecks": true /* When type checking, take into account 'null' and 'undefined'. */
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
