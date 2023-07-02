@@ -11,10 +11,10 @@
 
 	export let ticketID = '0';
 	export let isAddingTask = false;
-	export let taskItemsContainer: HTMLDivElement;
+	export let scrollToBottomOfTasks: () => void;
 
 	onMount(() => {
-		scrollTopContainer();
+		scrollToBottomOfTasks();
 	});
 
 	// TODO: For this component and TaskItem, deprecate this evaluatuion and use the completedBy field instead
@@ -24,10 +24,6 @@
 	const markTaskCompleted = async (e: Event) => {
 		// TODO: Record the user's ID when this is called
 		// On form submission, set the completedBy field to the user's ID
-	};
-
-	const scrollTopContainer = () => {
-		taskItemsContainer.scrollTop = taskItemsContainer.scrollHeight;
 	};
 
 	const cancelAddTask = () => {
@@ -41,7 +37,6 @@
 	use:enhance={() => {
 		return async ({ update }) => {
 			isAddingTask = false;
-			scrollTopContainer();
 			await update();
 		};
 	}}

@@ -3,9 +3,11 @@ export default interface ITaskItem {
 	ticketID: string;
 	description: string;
 	active: boolean;
-	completedBy?: string;
+	completedBy: string;
 	collectionId: string;
 	collectionName: string;
 	created: string;
 	updated: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	expand: Record<string, any>;
 }
