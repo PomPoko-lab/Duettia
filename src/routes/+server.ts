@@ -1,28 +1,15 @@
 import { error, json } from '@sveltejs/kit';
 import TaskItemStore from '$lib/server/stores/TaskItemStore';
 
-/** @type {import('./$types').RequestHandler} */
-export function GET({ url }) {
-	const min = Number(url.searchParams.get('min') ?? '0');
-	const max = Number(url.searchParams.get('max') ?? '1');
-
-	const d = max - min;
-
-	if (isNaN(d) || d < 0) {
-		throw error(400, 'min and max must be numbers, and min must be less than max');
-	}
-
-	const random = min + Math.random() * d;
-
-	return new Response(String(random));
-}
+import config from '$lib/config';
 
 export async function POST({ request }) {
+	// TODO: Move this into a form post handler
 	const { taskItemId, isChecked } = await request.json();
 	let completedBy = '';
 
 	if (isChecked) {
-		completedBy = '95q6fwvcekf55mw'; // Hardcoded until auth is implemented
+		completedBy = config.MY_USER_ID; // Hardcoded until auth is implemented
 	}
 
 	// TODO: verify user is allowed to update this task
