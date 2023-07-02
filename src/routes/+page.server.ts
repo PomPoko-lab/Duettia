@@ -1,69 +1,47 @@
-import { pb } from '$lib/pocketbase';
-import TaskItem from '$lib/server/stores/TaskItemStore';
-import config from '$lib/config';
+import Tickets from '$lib/server/models/Tickets';
+import type { RequestEvent } from '@sveltejs/kit';
+import TicketTasksController from '$lib/server/controllers/TicketTasksController';
 
-import type ITicket from '$lib/interface/ITicket';
 import type ITaskItem from '$lib/interface/ITaskItem';
+
+const ticketsDB = new Tickets();
+const ticketTaskController = new TicketTasksController();
 
 export const load = async () => {
 	// TODO: Remove this hard coded ticket ID
 	const ticketID = 'gc0t2enzzzq0wm5';
-	const task: ITicket = await pb.collection('tickets').getOne(ticketID);
+	const ticket = await ticketsDB.getOneRecord(ticketID);
 
-	// TODO: Add this into the TaskItemStore
-	const taskItems: ITaskItem[] = (
-		await pb.collection('ticket_tasks').getList(1, 100, {
-			filter: `ticketID = '${task.id}' && active = true`
-		})
-	).items;
+	const taskItems: ITaskItem[] = await ticketTaskController.getAllAvailableTaskItemsByTicket(
+		ticketID
+	);
 
 	return {
-		task: task.export(),
+		ticket: ticket.export(),
 		taskItems: taskItems.map((r) => r.export()),
 		ticketID: ticketID
 	};
 };
 
 export const actions = {
-	createTaskItem: async ({ cookies, request }) => {
-		// TODO: Eventually move this into a model
-		const formData = await request.formData();
+	createTaskItem: async (event: RequestEvent) => {
+		const results = await ticketTaskController.createTaskItem(event);
 
-		const ticketID = formData.get('ticketID');
-		const taskDescription = formData.get('taskDescription');
-		const taskIsCompleted = formData.get('taskIsCompleted') === '';
-		let completedBy = '';
-
-		if (taskIsCompleted) {
-			completedBy = config.MY_USER_ID;
-		}
-
-		const results = await TaskItem.createTaskItem(ticketID, taskDescription, completedBy);
+		// TODO: Handle the results of this update and return a 500 if it fails
+		return {
+			success: true
+		};
+	},
+	updateTaskItem: async (event: RequestEvent) => {
+		const results = await ticketTaskController.updateTaskItem(event);
 
 		return {
 			success: true
 		};
 	},
-	updateTaskItem: async ({ cookies, request }) => {
-		const formData = await request.formData();
-		const taskID = formData.get('taskItemID');
-		const taskDescription = formData.get('taskDescription');
+	deleteTaskItem: async (event: RequestEvent) => {
+		const results = await ticketTaskController.deleteTaskItem(event);
 
-		const updatedValues = {
-			description: taskDescription
-		};
-
-		const results = await TaskItem.updateTaskItem(taskID, updatedValues);
-
-		return {
-			success: true
-		};
-	},
-	deleteTaskItem: async ({ cookies, request }) => {
-		const formData = await request.formData();
-		const taskID = formData.get('taskItemID');
-
-		const results = await TaskItem.deleteTaskItem(taskID);
 		return {
 			success: true
 		};

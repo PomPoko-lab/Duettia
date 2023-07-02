@@ -46,7 +46,7 @@
 <div class="container mx-auto flex gap-6 my-6">
 	<div class="grow w-1/3">
 		<h5 class="mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			{data.task.title}
+			{data.ticket.title}
 		</h5>
 		<div>
 			<Label for="first_name" class="hidden">First name</Label>
