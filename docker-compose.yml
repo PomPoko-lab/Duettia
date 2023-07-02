@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  ts-node:
+    container_name: Node_${COMPOSE_PROJECT_NAME}
+    image: node:${NODE_VERSION}
+    ports:
+      - 5173:5173
+    volumes:
+      - ./:/home/node/app/
+    working_dir: /home/node/app/
+    command: sh -c "
+      npm install &&
+      npm run dev
+      "
+    depends_on:
+      - pocketbase
+
+  pocketbase:
+    container_name: PocketBase_${COMPOSE_PROJECT_NAME}
+    image: ${LINUX_IMAGE}
+    ports:
+      - 8090:8090
+    volumes:
+      - ./:/home/pb/
+    working_dir: /home/pb/
+    command: sh -c "
+      ./pocketbase serve --http=0.0.0.0:8090
+      "
