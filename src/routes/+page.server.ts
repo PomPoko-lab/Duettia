@@ -44,6 +44,21 @@ export const actions = {
 			success: true
 		};
 	},
+	updateTaskItem: async ({ cookies, request }) => {
+		const formData = await request.formData();
+		const taskID = formData.get('taskItemID');
+		const taskDescription = formData.get('taskDescription');
+
+		const updatedValues = {
+			description: taskDescription
+		};
+
+		const results = await TaskItem.updateTaskItem(taskID, updatedValues);
+
+		return {
+			success: true
+		};
+	},
 	deleteTaskItem: async ({ cookies, request }) => {
 		const formData = await request.formData();
 		const taskID = formData.get('taskItemID');

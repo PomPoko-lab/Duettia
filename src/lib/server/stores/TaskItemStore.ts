@@ -21,6 +21,11 @@ export default class TaskItemStore {
 		// }).items;
 	}
 
+	// TODO: Create a type for these values
+	static async updateTaskItem(taskId: string, values: object) {
+		return await pb.collection('ticket_tasks').update(taskId, values);
+	}
+
 	static async updateTaskCompletedStatus(taskId: string, completedBy: string) {
 		return await pb.collection('ticket_tasks').update(taskId, {
 			completedBy: completedBy
