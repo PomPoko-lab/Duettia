@@ -8,7 +8,6 @@ const ticketTaskController = new TicketTasksController();
 
 export const load: PageServerLoad = async ({ params }) => {
 	// TODO: Remove this hard coded ticket ID
-	// console.log;
 	// const ticketID = 'gc0t2enzzzq0wm5';
 	const ticketID = params.id;
 	const ticket = (await ticketsDB.getOneRecord(ticketID)).export();
