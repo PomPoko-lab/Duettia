@@ -30,7 +30,7 @@
 		const isChecked = targetElement.checked;
 
 		// TODO: Create an endpoint for stores
-		const response = await fetch('/tickets/', {
+		const response = await fetch('/tickets/api/updateTaskCompletionStatus', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

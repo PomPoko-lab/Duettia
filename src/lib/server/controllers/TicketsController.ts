@@ -13,4 +13,12 @@ export default class TicketsController {
 		});
 		return tickets;
 	}
+
+	async updateTicketContent(request: Request) {
+		const { ticketID, content } = await request.json();
+
+		return await this.ticketsDB.updateRecord(ticketID, {
+			content: content
+		});
+	}
 }

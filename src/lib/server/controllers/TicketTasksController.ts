@@ -68,6 +68,21 @@ export default class TicketTasksController {
 		return await this.ticketTasksDB.updateRecord(taskID, updatedValues);
 	}
 
+	async updateTaskCompletedStatus(request: Request) {
+		// TODO: verify user is allowed to update this task
+		// TODO: Handle the results of this update and return a 500 if it fails
+		const { taskItemId, isChecked } = await request.json();
+		let completedBy = '';
+
+		if (isChecked) {
+			completedBy = config.MY_USER_ID; // Hardcoded until auth is implemented
+		}
+
+		return await this.ticketTasksDB.updateRecord(taskItemId, {
+			completedBy: completedBy
+		});
+	}
+
 	/**
 	 * Form event handler for deleting a task item
 	 * @param event

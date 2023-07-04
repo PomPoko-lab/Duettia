@@ -2,6 +2,9 @@
 	import { Label, Textarea, Button, Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
 	import TaskItem from '$lib/components/TaskItem.svelte';
 	import NewTaskItem from '$lib/components/NewTaskItem.svelte';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data;
 
@@ -14,10 +17,34 @@
 	const scrollToBottomOfTasks = () => {
 		taskItemsContainer.scrollTop = taskItemsContainer.scrollHeight;
 	};
+
+	// Store the ticket content in a variable so we can update it on blur
+	let ticketContent = data.ticket.content;
+
+	const updateFormField = async (e: FocusEvent) => {
+		// Ignore if the content hasn't changed
+		if (ticketContent === data.ticket.content) {
+			return;
+		}
+
+		const response = await fetch('/tickets/api/updateTicketContent', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				ticketID: data.ticketID,
+				content: ticketContent
+			})
+		});
+
+		await invalidateAll(); // Refresh the page's data
+		console.log(ticketContent);
+	};
 </script>
 
 <div class="container mx-auto flex gap-6 my-6 flex-col md:flex-row">
-	<div class="grow w-full md:w-1/3">
+	<div class="grow w-full md:w-2/4">
 		<h5 class="mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			{data.ticket.title}
 		</h5>
@@ -25,15 +52,17 @@
 			<Label for="ticketContent" class="hidden" />
 			<Textarea
 				type="text"
-				id="ticketContent"
+				name="ticketContent"
 				placeholder="Content"
+				bind:value={ticketContent}
 				required
 				class="mb-3"
 				rows="34"
+				on:blur={updateFormField}
 			/>
 		</div>
 	</div>
-	<div class="grow w-full md:w-2/3 flex flex-col">
+	<div class="grow w-full md:w-2/4 flex flex-col">
 		<div
 			bind:this={taskItemsContainer}
 			class="flex flex-col gap-6 overflow-y-scroll my-6 mt-14"
