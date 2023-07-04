@@ -3,20 +3,27 @@
 	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
 
 	export let data;
+	const pageTitle = 'Tickets';
 	// console.log(data);
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+</svelte:head>
 
 <header class="mt-2 mb-6">
 	<Breadcrumb aria-label="Solid background breadcrumb">
 		<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-		<BreadcrumbItem href="/tickets">Tickets</BreadcrumbItem>
+		<BreadcrumbItem href="/tickets">{pageTitle}</BreadcrumbItem>
 		<!-- <BreadcrumbItem>Item Name</BreadcrumbItem> -->
 	</Breadcrumb>
 </header>
 
 <Listgroup active>
 	{#each data.tickets as ticket (ticket.id)}
-		<ListgroupItem class="flex gap-2 md:gap-6 items-center">
+		<ListgroupItem
+			class="flex gap-2 md:gap-6 items-center hover:bg-gray-100 hover:text-primary-700 py-6 px-10"
+		>
 			<a class="w-full sm:basis-8/12" href="/tickets/{ticket.id}">
 				{ticket.title}
 			</a>

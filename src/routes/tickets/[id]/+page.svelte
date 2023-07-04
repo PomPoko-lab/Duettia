@@ -16,6 +16,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{data.ticket.title}</title>
+</svelte:head>
+
 <!-- Header -->
 <header class="mt-2 mb-6">
 	<Breadcrumb aria-label="Solid background breadcrumb">
@@ -60,7 +64,7 @@
 				<NewTaskItem ticketID={data.ticketID} bind:isAddingTask {scrollToBottomOfTasks} />
 			{/if}
 		</div>
-		<Button disabled={isAddingTask} on:click={() => (isAddingTask = true)} outline color="blue">
+		<Button disabled={isAddingTask} on:click={() => (isAddingTask = true)} outline color="primary">
 			<span class="material-icons">add</span>
 			<span class="ms-2">Add task</span>
 		</Button>
