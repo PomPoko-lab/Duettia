@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Label, Textarea, Button } from 'flowbite-svelte';
+	import { Label, Textarea, Button, Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
 	import TaskItem from '$lib/components/TaskItem.svelte';
 	import NewTaskItem from '$lib/components/NewTaskItem.svelte';
 
@@ -16,6 +16,16 @@
 	};
 </script>
 
+<!-- Header -->
+<header class="mt-2 mb-6">
+	<Breadcrumb aria-label="Solid background breadcrumb">
+		<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
+		<BreadcrumbItem href="/tickets">Tickets</BreadcrumbItem>
+		<BreadcrumbItem>{data.ticket.title}</BreadcrumbItem>
+	</Breadcrumb>
+</header>
+
+<!-- Content -->
 <div class="container mx-auto flex gap-6 my-6 flex-col md:flex-row">
 	<div class="grow w-full md:w-1/3">
 		<h5 class="mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
