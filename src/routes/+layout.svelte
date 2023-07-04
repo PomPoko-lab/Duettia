@@ -11,5 +11,5 @@
 	<main class="col-span-8 lg:col-span-9 xl:col-span-10 overflow-y-auto row-span-11 px-4 pr-8">
 		<slot />
 	</main>
-	<Footer footerClass="col-span-full self-end h-1/6" />
+	<Footer />
 </div>
